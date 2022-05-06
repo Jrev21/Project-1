@@ -1,0 +1,215 @@
+import os
+import pandas
+import pymongo
+
+dbName = "Project1"
+dbHost = "mongodb://localhost:27017/"
+
+try:
+    client = pymongo.MongoClient(dbHost)
+    db = client[dbName]
+    print("System Online")
+
+except Exception as e:
+    print("System Error")
+    raise e
+
+
+def main_menu():
+
+    print("                  Welcome!\nPlease make your selection from the list below.\n")
+    print("[1] View Client List")
+    print("[2] Add New Client")
+    print("[3] Update Client Information")
+    print("[4] Delete Client Account")
+    print("[0] Exit")
+
+    choice = input(">>>: ")
+    exec_menu(choice)
+
+    return
+
+
+def exec_menu(choice):
+    os.system('cls')
+    ch = choice.lower()
+    if ch == '':
+        menu_actions['main_menu']()
+    else:
+        try:
+            menu_actions[ch]()
+        except KeyError:
+            print("-Something went wrong! Please try again!-\n")
+            menu_actions['main_menu']()
+    return
+
+
+def exec_menu1(choice):
+    os.system('cls')
+    ch = choice.lower()
+    if ch == '':
+        menu_actions1['menu1']()
+    else:
+        try:
+            menu_actions1[ch]()
+        except KeyError:
+            print("")
+            menu_actions['menu1']()
+    return
+
+
+def menu1():
+    print("\n| View Client List |\n")
+    print("[1] See all Clients")
+    print("[2] Find Client")
+    print("[9] Back to Main Menu")
+    choice = input(">>>: ")
+    exec_menu1(choice)
+    return
+
+
+def menu2():
+    print("\n| Add New Client |\n")
+    insert()
+    #    print("[9] Back to Main Menu")
+    return
+
+
+def menu3():
+    print("\n| Update Client Information |\n")
+    update()
+    return
+
+
+def menu4():
+    print("\n| Delete Client Information |\n")
+    delete()
+    return
+
+
+def insert():
+    try:
+        _id = int(input('Enter Client ID : '))
+        first_name = str(input('Enter First Name : '))
+        last_name = str(input('Enter Last Name : '))
+        dob = str(input('Enter Date of Birth : '))
+        email = str(input('Enter Email : '))
+        phone = int(input('Enter Phone Number : '))
+        city = str(input('Enter City : '))
+
+        db.Clients.insert_one(
+            {
+                "_id": _id,
+                "First Name": first_name,
+                "Last Name": last_name,
+                "Date of Birth": dob,
+                "Email": email,
+                "Phone": phone,
+                "City": city
+            })
+        print('\n| New Client Successful. Returning to Main Menu |\n')
+
+    except Exception:
+        print("\n-Invalid entry, Returning to Main Menu-\n")
+    main_menu()
+
+
+def read():
+    try:
+        pandas.set_option('display.max_rows', None)
+        pandas.set_option('display.max_columns', None)
+        pandas.set_option('display.width', None)
+        pandas.set_option('display.max_colwidth', None)
+        full = db.Clients.find()
+        df = pandas.DataFrame(full)
+        print(df)
+    #            loop=false
+    except Exception:
+        print("\n-Something went wrong! Please try again!-\n")
+    #            loop=true
+    print('\n| End of Client List |\n| Returning to Main Menu|\n')
+    main_menu()
+
+
+def read1():
+    try:
+        pandas.set_option('display.max_rows', None)
+        pandas.set_option('display.max_columns', None)
+        pandas.set_option('display.width', None)
+        pandas.set_option('display.max_colwidth', None)
+        q = int(input("\nEnter Client ID\n"))
+        query = {"_id": q}
+        results = db.Clients.find(query)
+        print("\n| Client Entry Found |\n")
+        one = pandas.DataFrame(results)
+        print(one)
+    except Exception:
+        print("\n-Something went wrong! Please try again!-\n")
+    print("\n| Returning to Main Menu |\n")
+    main_menu()
+
+
+def update():
+    try:
+        _id = int(input('\nEnter ID you wish to Update\n'))
+        first_name = str(input('\nEnter Updated First Name\n'))
+        last_name = str(input('\nEnter Updated Last Name\n'))
+        dob = str(input('\nEnter Updated Date of Birth\n'))
+        email = str(input('\nEnter Updated Email\n'))
+        phone = int(input('\nEnter Updated Phone\n'))
+        city = str(input('\nEnter Updated City\n'))
+
+        db.Clients.update_one(
+            {"_id": _id},
+            {
+                "$set": {
+                    "First Name": first_name,
+                    "Last Name": last_name,
+                    "Date of Birth": dob,
+                    "Email": email,
+                    "Phone": phone,
+                    "City": city
+                }
+            }
+        )
+        print("\n| Update Successful. Returning to Main Menu |\n")
+
+    except Exception:
+        print("-Invalid entry, Returning to Main Menu-\n")
+    main_menu()
+
+
+def delete():
+    try:
+        _id = int(input('\nEnter the Client ID you wish to Delete\n'))
+        db.Clients.delete_many({"_id": _id})
+        print('\n| Deletion Successful. Returning to Main Menu |\n')
+    except Exception:
+        print("-Invalid entry, Returning to Main Menu-\n")
+    main_menu()
+
+
+def back():
+    menu_actions['main_menu']()
+    print("| Back to Main Menu |\n")
+
+
+menu_actions = {
+    'main_menu': main_menu,
+    '1': menu1,
+    '2': menu2,
+    '3': menu3,
+    '4': menu4,
+    '9': back,
+    '0': exit
+}
+
+menu_actions1 = {
+    'menu1': menu1,
+    '1': read,
+    '2': read1,
+    '9': back,
+}
+
+if __name__ == "__main__":
+    main_menu()
