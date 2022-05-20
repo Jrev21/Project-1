@@ -7,6 +7,7 @@ My first project was to create a basic CRUD operation so I implemented it with a
 ## Technologies Used
 * IntelliJ
 * Python
+* Pymongo
 * MongoDB
 ## Features
 List of features ready and TODOs for future development
@@ -14,6 +15,7 @@ List of features ready and TODOs for future development
 * Read
 * Update
 * Delete
+
 To-do list:
 * Could be refined more to be used in the future
 ## Getting Started
