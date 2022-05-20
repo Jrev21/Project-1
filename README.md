@@ -3,19 +3,19 @@
 >**PROJECT DESCRIPTION:** 
 ## Project Description
 
-Here goes your awesome project description!
+My first project was to create a basic CRUD operation so I implemented it with a client database. Naturally this being my first project it is simplistic but does exactly what it needs to do.
 ## Technologies Used
 * IntelliJ
 * Python
 * MongoDB
 ## Features
 List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
+* Create
+* Read
+* Update
+* Delete
 To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+* Could be refined more to be used in the future
 ## Getting Started
    
 (include git clone command)
