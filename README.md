@@ -21,8 +21,7 @@ To-do list:
 * Can add a login system or add new options for the menu
 ## Getting Started
    
-(include git clone command)
-(include all environment setup steps)
+
 >  
 > 
 
